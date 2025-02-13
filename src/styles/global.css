@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Monoid";
+  src: url(/fonts/Monoid-Regular.ttf) format("truetype");
+}
+html {
+  @apply bg-neutral-900 text-blue-200;
+}
+
+body {
+  font-family: "Monoid", monospace;
+}
+
+.new_skill {
+  @apply bg-red-500/40 text-red-500;
+}
+.stuck_on_issue {
+  @apply bg-red-700/40 text-red-700;
+}
+.solving_problems {
+  @apply bg-orange-500/40 text-orange-500;
+}
+.learning_by_doing {
+  @apply bg-orange-600/40 text-orange-600;
+}
+.real-world_experience {
+  @apply bg-yellow-500/40 text-yellow-500;
+}
+.first_project {
+  @apply bg-lime-500/40 text-lime-500;
+}
+.debugging_struggles {
+  @apply bg-green-500/40 text-green-500;
+}
+.mistake_learned_from {
+  @apply bg-teal-400/40 text-teal-400;
+}
+.time_management {
+  @apply bg-sky-500/40 text-sky-500;
+}
+.working_in_a_team {
+  @apply bg-indigo-400/40 text-indigo-400;
+}
+.adapting_to_challenges {
+  @apply bg-violet-500/40 text-violet-500;
+}
+.getting_feedback {
+  @apply bg-purple-400/40 text-purple-400;
+}
+.gaining_confidence {
+  @apply bg-fuchsia-500/40 text-fuchsia-500;
+}
+.workflow_improvement {
+  @apply bg-pink-500/40 text-pink-500;
+}
+.mentorship_experience {
+  @apply bg-rose-500/40 text-rose-500;
+}

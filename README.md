@@ -11,6 +11,7 @@ This is a Next.js project that serves as a portfolio for my intership. It showca
 - Next.js
 - React
 - Node.js
+- Tanstack query
 - Vercel
 - MongoDB
 - Tailwind CSS
