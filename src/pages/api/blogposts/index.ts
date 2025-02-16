@@ -17,17 +17,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     } else if (req.method === 'POST') {
         try {
             await connect();
-            const data = req.body;
+            const { title, content, tags } = req.body;
             // check if data is valid
-            if (!data.title || !data.content || !data.tags) {
+            if (!title || !content || !tags) {
                 return res.status(400).json({ message: 'Invalid data' });
             }
             const newBlog = await blogCollection.insertOne({
                 _id: new ObjectId(),
-                title: data.title,
-                content: data.content,
+                title,
+                content,
                 date: new Date(),
-                tags: data.tags
+                tags
             });
             return res.status(201).json({ message: `new blog inserted with id: ${newBlog.insertedId.toHexString()}` });
         } catch (error) {

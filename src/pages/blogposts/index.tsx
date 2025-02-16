@@ -1,4 +1,5 @@
 import BlogPost from "@/components/BlogPost";
+import Container from "@/components/Container";
 import { Blog } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -15,6 +16,7 @@ const BlogPage = () => {
       const { data } = await axios.get("/api/blogposts");
 
       return data.map((blog: any) => ({
+        _id: blog._id,
         title: blog.title,
         content: blog.content,
         date: new Date(blog.date),
@@ -26,17 +28,23 @@ const BlogPage = () => {
 
   return (
     <>
-      <div>
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : isError ? (
-          <p>Error</p>
-        ) : !blogs ? (
-          <p>No blogs found</p>
-        ) : (
-          blogs.map((blog: Blog, index) => <BlogPost blog={blog} key={index} />)
-        )}
-      </div>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : isError ? (
+        <p>Error</p>
+      ) : !blogs ? (
+        <p>No blogs found</p>
+      ) : (
+        blogs.map((blog: Blog, index) => (
+          <Container bgColor={`${index % 2 === 0 ? "bg-neutral-800" : ""}`}>
+            <BlogPost
+              blog={blog}
+              key={index}
+              bgColor={`${index % 2 === 0 ? "#262626" : ""}`}
+            />
+          </Container>
+        ))
+      )}
     </>
   );
 };

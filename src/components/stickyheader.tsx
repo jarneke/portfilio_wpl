@@ -10,7 +10,8 @@ const StickyHeader = ({ children }: StickyHeaderProps) => {
   return (
     <>
       <div className="sticky justify-end top-0 z-50 bg-neutral-900/70 backdrop-blur-md">
-        <div className="p-5">
+        <div className="flex p-5">
+          <p className="font-bold">Eldrup Jarne</p>
           <FaBars
             onClick={() => setOpen(!open)}
             className="cursor-pointer w-8 h-8 ms-auto me-0 z-50"
