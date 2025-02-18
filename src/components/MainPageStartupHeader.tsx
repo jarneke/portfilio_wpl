@@ -111,6 +111,7 @@ export default function MainPageStartupHeader() {
           onClick={() => {
             window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
           }}
+          className="cursor-pointer"
         />
       </div>
     </div>
