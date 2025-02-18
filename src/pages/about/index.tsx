@@ -23,7 +23,7 @@ function calculateAge(birthday: string | Date): number {
 
 export default function About({}: AboutProps) {
   return (
-    <>
+    <div className="overflow-x-hidden">
       <StickyHeader />
       <Container className="flex justify-between gap-7">
         <Container nopadding>
@@ -119,6 +119,6 @@ export default function About({}: AboutProps) {
           </p>
         </Container>
       </div>
-    </>
+    </div>
   );
 }
