@@ -23,35 +23,34 @@ function calculateAge(birthday: string | Date): number {
 
 export default function About({}: AboutProps) {
   return (
-    <div className="overflow-x-hidden">
+    <div className="">
       <StickyHeader />
-      <Container className="flex justify-between gap-7">
-        <Container nopadding>
+      <Container className="flex flex-col md:flex-row justify-center gap-7">
+        <div>
           <img
             src="https://avatars.githubusercontent.com/u/97990733?v=4"
             alt="GitHub profile picture"
             className="rounded-3xl h-100"
           />
-        </Container>
+        </div>
         <Container nopadding bgColor="w-2/3 ps-0 lg:ps-20 md:w-1/2">
           <h1>Jarne Eldrup</h1>
           <p>
             02/09/2004 ={`>`} {calculateAge(new Date(2004, 8, 2))} years old
           </p>
-
-          <div className="flex flex-nowrap">
-            <p className="text-nowrap">Studying Programming @</p>
+          <p>
+            {"Studying Programming @ "}
             <Link
-              href="www.ap.be"
+              href="https://www.ap.be"
               target="_blank"
               className="underline text-nowrap"
             >
               AP-Antwerpen
             </Link>
-          </div>
+          </p>
           <div className="flex flex-col justify-center gap-4">
             <Link
-              href="https://linkedin.com/in/jouwprofiel"
+              href="https://www.linkedin.com/in/jarne-eldrup"
               target="_blank"
               className="underline flex flex-nowrap"
             >
@@ -59,14 +58,14 @@ export default function About({}: AboutProps) {
               <span>LinkedIn</span>
             </Link>
             <Link
-              href=""
+              href="https://github.com/jarneke"
               target="_blank"
               className="underline flex flex-nowrap"
             >
               <FaGithub className="mr-2" />
               <span>GitHub</span>
             </Link>
-            <div className="flex flex-nowrap">
+            <div className="flex">
               <Link
                 href="mailto:jarne.eldrup@outlook.com"
                 target="_blank"
@@ -75,7 +74,6 @@ export default function About({}: AboutProps) {
                 <FaEnvelope className="mr-2" />
                 <span>Email</span>
               </Link>
-              <p className="text-nowrap m-0">: jarne.eldrup@outlook.com</p>
             </div>
             <Link
               href="CV_Jarne_Eldrup.pdf"
