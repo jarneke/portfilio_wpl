@@ -83,7 +83,7 @@ export default function About({}: AboutProps) {
               className="underline flex flex-nowrap"
             >
               <FaFilePdf className="mr-2" />
-              <span>CV</span>
+              <span>Curriculum Vitae</span>
             </Link>
           </div>
         </Container>

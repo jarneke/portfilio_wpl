@@ -38,16 +38,31 @@ const StickyHeader = ({ children }: StickyHeaderProps) => {
           ) : (
             <>
               <MenuItem>
-                <FaHome className="w-5 h-5 text-blue-200" />
-                <Link href={"/"}>Home</Link>
+                <Link
+                  href={"/"}
+                  className="w-full flex justify-center items-center gap-5"
+                >
+                  <FaHome className="w-5 h-5 text-blue-200" />
+                  <span>Home</span>
+                </Link>
               </MenuItem>
               <MenuItem>
-                <FaUser className="w-5 h-5 text-blue-200" />
-                <Link href={"/about"}>About</Link>
+                <Link
+                  href={"/about"}
+                  className="w-full flex justify-center items-center gap-5"
+                >
+                  <FaUser className="w-5 h-5 text-blue-200" />
+                  <span>About</span>
+                </Link>
               </MenuItem>
               <MenuItem>
-                <FaBook className="w-5 h-5 text-blue-200" />
-                <Link href={"/blogposts"}>Blogposts</Link>
+                <Link
+                  href={"/blogposts"}
+                  className="w-full flex justify-center items-center gap-5"
+                >
+                  <FaBook className="w-5 h-5 text-blue-200" />
+                  <span>Blogposts</span>
+                </Link>
               </MenuItem>
             </>
           )}
