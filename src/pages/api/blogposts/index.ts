@@ -3,11 +3,16 @@ import { Blog } from '@/types/types';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Blog[] | { message: string }>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Blog[] | { message: string } | any>) {
     if (req.method === 'GET') {
         try {
             await connect();
-            const blogs = await blogCollection.find().toArray()
+            if (req.query.tags) {
+                const tags = !Array.isArray(req.query.tags) ? req.query.tags.split(",") : req.query.tags;
+                const blogs = await blogCollection.find({ tags: { $all: tags } }).toArray()
+                res.status(200).json(blogs);
+            }
+            const blogs = await blogCollection.find({}, { sort: { date: -1 } }).toArray()
             res.status(200).json(blogs);
         } catch (error) {
             res.status(500).json({ message: 'An error occurred while fetching blog posts' });

@@ -1,43 +1,31 @@
 import { Blog } from "@/types/types";
 import TagBadge from "./TagBadge";
 import { useEffect, useState } from "react";
-import { remark } from "remark";
-import gfm from "remark-gfm";
-import breaks from "remark-breaks";
-import DOMPurify from "dompurify";
+import Error from "@/components/Error";
 import axios from "axios";
-import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { ObjectId } from "mongodb";
 import MarkdownIt from "markdown-it";
 import markdownItFootnote from "markdown-it-footnote";
+import LoadingIcon from "./Loadingicon";
 
 interface BlogPostProps {
-  blog: Blog | undefined;
-  key?: number;
+  blog: Blog;
   isLoading?: boolean;
   expanded?: boolean;
   bgColor?: string;
+  isError?: boolean;
 }
 
 const BlogPost = ({
   blog,
-  key,
   isLoading,
+  isError,
   expanded,
   bgColor,
 }: BlogPostProps) => {
-  console.log("Background Color:", bgColor);
-
   const [htmlContent, setHtmlContent] = useState<string>("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    axios.get("/api/verify").then((res) => {
-      if (res.data.isAuthenticated) setIsAuthenticated(true);
-    });
-  }, []);
 
   useEffect(() => {
     if (blog?.content) {
@@ -56,7 +44,6 @@ const BlogPost = ({
 
   const removeBlog = async (_id: ObjectId | undefined) => {
     if (!_id) return;
-
     try {
       const response = await axios.delete(`/api/blogposts/${_id}`);
       if (response.status === 200) {
@@ -69,11 +56,11 @@ const BlogPost = ({
     }
   };
 
-  if (!blog) return <p>No blog found</p>;
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <LoadingIcon />;
+  if (isError) return <Error />;
 
   return (
-    <div key={key} className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5">
       <div className="flex gap-2 flex-wrap mb-5 bg-white/10 p-3 rounded-md">
         {blog.tags.length === 0 && (
           <TagBadge
@@ -88,12 +75,6 @@ const BlogPost = ({
       </div>
       <div className="flex justify-between">
         <h1>{blog.title}</h1>
-        {isAuthenticated ? (
-          <FaTimes
-            className="w-6 h-6 cursor-pointer"
-            onClick={() => removeBlog(blog._id)}
-          />
-        ) : null}
       </div>
       <div
         className={`relative overflow-hidden transition-all ${

@@ -43,11 +43,7 @@ function Admin() {
 
   return (
     <>
-      <StickyHeader>
-        <MenuItem>
-          <Link href={"/"}>Home</Link>
-        </MenuItem>
-      </StickyHeader>
+      <StickyHeader />
       <div className="flex flex-col justify-center xl:flex-row">
         <Container bgColor="w-full">
           <BlogPostForm onChange={handleFormChange} />

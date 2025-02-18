@@ -80,7 +80,7 @@ export default function MainPageStartupHeader() {
             setScramble(false);
             setTimeout(() => setScramble(true), 10);
           }}
-          className="relative text-nowrap flex justify-center items-center text-lg sm:text-xl md:text-2xl lg:text-4xl font-black"
+          className="relative text-nowrap flex justify-center items-center text-lg sm:text-xl md:text-2xl lg:text-4xl font-black cursor-pointer"
           style={{ padding, opacity }}
         >
           {displayText}
@@ -105,7 +105,13 @@ export default function MainPageStartupHeader() {
         </div>
       </div>
       <div className="absolute bottom-10 animate-bounce">
-        <FaChevronDown size={48} style={{ opacity }} />
+        <FaChevronDown
+          size={48}
+          style={{ opacity }}
+          onClick={() => {
+            window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+          }}
+        />
       </div>
     </div>
   );

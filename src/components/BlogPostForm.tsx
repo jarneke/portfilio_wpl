@@ -2,71 +2,12 @@ import { Blog } from "@/types/types";
 import axios from "axios";
 import { useState } from "react";
 import Select, { MultiValue } from "react-select";
-import { remark } from "remark";
-import remarkHtml from "remark-html";
+import { tagOptions } from "@/types/types";
+import { customStyles } from "@/styles/SelectStyle";
 
 interface BlogPostFormProps {
   onChange?: (data: Blog) => void;
 }
-
-const opts: string[] = [
-  "new skill",
-  "stuck on issue",
-  "solving problems",
-  "learning by doing",
-  "real world experience",
-  "first project",
-  "debugging struggles",
-  "mistake learned from",
-  "time management",
-  "working in a team",
-  "adapting to challenges",
-  "getting feedback",
-  "gaining confidence",
-  "workflow improvement",
-  "mentorship experience",
-];
-
-const customStyles = {
-  control: (provided: any, state: any) => ({
-    ...provided,
-    borderRadius: "none",
-    backgroundColor: "transparent",
-    border: "none",
-    borderBottom: "2px solid #bedbff",
-    boxShadow: "none",
-    color: "#bedbff",
-    "&:hover": {
-      borderBottom: "2px solid #bedbff",
-    },
-  }),
-  option: ({ data }: any) => ({
-    backgroundColor: "#262626",
-    margin: "0.5rem",
-    padding: "0.5rem",
-    borderRadius: "0.5rem",
-  }),
-  menu: (provided: any) => ({
-    ...provided,
-    backgroundColor: "#171717",
-  }),
-  multiValue: (provided: any, { data }: any) => ({
-    ...provided,
-    borderRadius: "0.5rem",
-    backgroundColor: "#171717",
-  }),
-  multiValueLabel: (provided: any, { data }: any) => ({
-    ...provided,
-    color: "#bedbff",
-  }),
-  multiValueRemove: (provided: any) => ({
-    ...provided,
-    color: "white", // Remove button icon color
-    "&:hover": {
-      backgroundColor: "rgba(0,0,0,0.2)", // Darken on hover
-    },
-  }),
-};
 
 const BlogPostForm = ({ onChange }: BlogPostFormProps) => {
   const [formData, setFormData] = useState<Blog>({
@@ -150,7 +91,7 @@ const BlogPostForm = ({ onChange }: BlogPostFormProps) => {
           isMulti
           name="tags"
           placeholder="Select tags (multiple)"
-          options={opts.map((opt) => ({ value: opt, label: opt }))}
+          options={tagOptions.map((opt) => ({ value: opt, label: opt }))}
           className="basic-multi-select"
           classNamePrefix="select"
           onChange={(selectedOptions) => {

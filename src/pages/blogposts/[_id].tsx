@@ -1,5 +1,6 @@
 import BlogPost from "@/components/BlogPost";
 import Container from "@/components/Container";
+import Loadingicon from "@/components/Loadingicon";
 import MenuItem from "@/components/MenuItem";
 import StickyHeader from "@/components/stickyheader";
 import { Blog } from "@/types/types";
@@ -7,14 +8,13 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { FaChevronLeft } from "react-icons/fa";
+import Error from "@/components/Error";
 
 interface BlogDetailProps {}
 
 function BlogDetail({}: BlogDetailProps) {
   const router = useRouter();
-  console.log("router query", router.query);
 
   const { _id } = router.query;
 
@@ -32,17 +32,7 @@ function BlogDetail({}: BlogDetailProps) {
 
   return (
     <>
-      <StickyHeader>
-        <MenuItem>
-          <Link href={"/"}>Home</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link href={"/about"}>About</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link href={"/blogposts"}>Blogposts</Link>
-        </MenuItem>
-      </StickyHeader>
+      <StickyHeader />
       <Container nopadding>
         <button onClick={() => router.back()}>
           <FaChevronLeft className="inline-block mr-2" />
@@ -50,7 +40,13 @@ function BlogDetail({}: BlogDetailProps) {
         </button>
       </Container>
       <Container className="flex flex-col gap-7">
-        <BlogPost blog={blog} isLoading={isLoading} expanded />
+        {isLoading ? (
+          <Loadingicon />
+        ) : isError ? (
+          <Error />
+        ) : (
+          <BlogPost blog={blog!} isLoading={isLoading} expanded />
+        )}
       </Container>
     </>
   );

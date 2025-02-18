@@ -25,55 +25,55 @@ export default function Home() {
 
   return (
     <>
-      <StickyHeader>
-        <MenuItem>
-          <Link href={"/"}>Home</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link href={"/about"}>About</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link href={"/blogposts"}>Blogposts</Link>
-        </MenuItem>
-      </StickyHeader>
+      <StickyHeader />
       <MainPageStartupHeader />
       <div className="flex flex-col xl:flex-row ">
-        <Container bgColor="bg-neutral-800" className="flex flex-col gap-7">
-          <h1>Welcome to my portfolio</h1>
-          <p>
-            During my internship at 2commit, a company specializing in custom
-            code and low-code solutions, I am developing applications using
-            Microsoft's Power Platform. This platform allows for the creation of
-            business applications with minimal coding, but despite that, I have
-            a strong passion for programming and enjoy writing code whenever
-            possible.
-          </p>
-          <p>On this website, you'll find:</p>
-          <ul className="flex flex-col gap-5">
-            <li>
-              {"->  "}
-              <Link href={"/blogposts"} className="underline">
-                Blog Page
-              </Link>{" "}
-              Regular updates on my projects, challenges and achievements
-              thoughout the internship
+        <Container
+          bgColor="bg-neutral-800 w-full xl:w-1/3 px-20"
+          className="flex flex-col"
+        >
+          <h1 className="mb-12">Welcome to my portfolio</h1>
+          <p className="mb-12">On this website, you'll find:</p>
+          <ul className="flex flex-col gap-10 list-none mb-12">
+            <li className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <p className="m-0">{"->  "}</p>
+                <Link href={"/blogposts"} className="underline">
+                  Blog Page
+                </Link>
+              </div>
+              <p className="ms-7 m-0">
+                Regular updates on my projects, challenges and achievements
+                thoughout the internship
+              </p>
             </li>
-            <li>
-              {"->  "}
-              <Link href={"/about"} className="underline">
-                About Page
-              </Link>{" "}
-              Information about me, my work and my role within 2commit
+            <li className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <p className="m-0">{"->  "}</p>
+                <Link href={"/about"} className="underline">
+                  About Page
+                </Link>
+              </div>
+              <p className="ms-7 m-0">
+                Information about me, my internship and my role within 2commit
+              </p>
             </li>
           </ul>
-          <p>
+          <p className="m-0">
             Feel free to explore and learn more about my journey in application
             development with 2commit.
           </p>
         </Container>
-        <Container className="flex flex-col gap-10">
+        <Container
+          className="flex flex-col gap-10"
+          bgColor="px-20 w-full xl:w-2/3"
+        >
           <h1>Check out my latest blog!</h1>
-          <BlogPost blog={blog} isLoading={isLoading}></BlogPost>
+          <BlogPost
+            blog={blog!}
+            isLoading={isLoading}
+            isError={isError}
+          ></BlogPost>
           <Link href={"/blogposts"} className="flex gap-2 items-center">
             <p className="underline mb-0">
               Check out the rest of my blog posts
