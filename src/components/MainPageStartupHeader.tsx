@@ -70,8 +70,8 @@ export default function MainPageStartupHeader() {
   });
 
   return (
-    <div className="h-screen flex justify-center items-center overflow-x-hidden">
-      <div className="relative p-6 text-4xl font-black">
+    <div className="h-screen flex justify-center items-center overflow-x-hidden -mt-20">
+      <div className="relative p-6 text-4xl font-black ">
         <div
           onClick={() => {
             setRandomWord(
