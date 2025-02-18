@@ -7,7 +7,6 @@ import axios from "axios";
 import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
 import StickyHeader from "@/components/stickyheader";
-import MenuItem from "@/components/MenuItem";
 
 export default function Home() {
   const {

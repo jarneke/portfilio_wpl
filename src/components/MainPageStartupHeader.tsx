@@ -80,7 +80,7 @@ export default function MainPageStartupHeader() {
             setScramble(false);
             setTimeout(() => setScramble(true), 10);
           }}
-          className="relative text-nowrap flex justify-center items-center text-lg xs sm:text-xl md:text-2xl lg:text-4xl font-black cursor-pointer"
+          className="relative text-nowrap flex justify-center items-center text-sm sm:text-xl md:text-2xl lg:text-4xl font-black cursor-pointer"
           style={{ padding, opacity }}
         >
           {displayText}
