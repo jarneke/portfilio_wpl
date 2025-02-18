@@ -2,7 +2,7 @@ import MenuItem from "@/components/MenuItem";
 import StickyHeader from "@/components/stickyheader";
 import Link from "next/link";
 import Container from "@/components/Container";
-import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaEnvelope, FaFilePdf, FaGithub, FaLinkedin } from "react-icons/fa";
 
 interface AboutProps {}
 
@@ -75,8 +75,16 @@ export default function About({}: AboutProps) {
                 <FaEnvelope className="mr-2" />
                 <span>Email</span>
               </Link>
-              <p className="text-nowrap">: jarne.eldrup@outlook.com</p>
+              <p className="text-nowrap m-0">: jarne.eldrup@outlook.com</p>
             </div>
+            <Link
+              href="CV_Jarne_Eldrup.pdf"
+              target="_blank"
+              className="underline flex flex-nowrap"
+            >
+              <FaFilePdf className="mr-2" />
+              <span>CV</span>
+            </Link>
           </div>
         </Container>
       </Container>
