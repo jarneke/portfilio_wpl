@@ -28,7 +28,7 @@ export default function Home() {
       <MainPageStartupHeader />
       <div className="flex flex-col xl:flex-row ">
         <Container
-          bgColor="bg-neutral-800 w-full xl:w-1/3 px-20"
+          bgColor="bg-neutral-800 w-full xl:w-1/3"
           className="flex flex-col"
         >
           <h1 className="mb-12">Welcome to my portfolio</h1>
@@ -63,10 +63,7 @@ export default function Home() {
             development with 2commit.
           </p>
         </Container>
-        <Container
-          className="flex flex-col gap-10"
-          bgColor="px-20 w-full xl:w-2/3"
-        >
+        <Container className="flex flex-col gap-10" bgColor="w-full xl:w-2/3">
           <h1>Check out my latest blog!</h1>
           <BlogPost
             blog={blog!}
