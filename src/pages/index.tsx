@@ -24,7 +24,7 @@ export default function Home() {
   });
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <StickyHeader />
       <MainPageStartupHeader />
       <div className="flex flex-col xl:flex-row ">
@@ -82,6 +82,6 @@ export default function Home() {
           </Link>
         </Container>
       </div>
-    </>
+    </div>
   );
 }
