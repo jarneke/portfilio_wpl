@@ -13,7 +13,9 @@ const StickyHeader = ({ children }: StickyHeaderProps) => {
     <>
       <div className="sticky justify-end top-0 z-50 bg-neutral-900/70 backdrop-blur-md">
         <div className="flex p-5">
-          <p className="font-bold">Eldrup Jarne</p>
+          <Link href="/" className="font-bold no-underline">
+            Eldrup Jarne
+          </Link>
           {open ? (
             <FaTimes
               onClick={() => setOpen(!open)}
