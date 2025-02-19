@@ -61,17 +61,20 @@ const BlogPost = ({
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex gap-2 flex-wrap mb-5 bg-white/10 p-3 rounded-md">
-        {blog.tags.length === 0 && (
-          <TagBadge
-            tag="No tags selected"
-            key={0}
-            className="bg-blue-200/40 text-blue-200"
-          />
-        )}
-        {blog.tags.map((tag, index) => (
-          <TagBadge tag={tag} key={index} />
-        ))}
+      <div className="flex flex-col gap-2 flex-wrap mb-5 bg-white/10 p-3 rounded-md">
+        <p className="m-0 text-blue-200/50">Tags</p>
+        <div className="flex gap-2 flex-wrap mb-2">
+          {blog.tags.length === 0 && (
+            <TagBadge
+              tag="No tags selected"
+              key={0}
+              className="bg-blue-200/40 text-blue-200"
+            />
+          )}
+          {blog.tags.map((tag, index) => (
+            <TagBadge tag={tag} key={index} />
+          ))}
+        </div>
       </div>
       <div className="flex justify-between">
         <h1>{blog.title}</h1>
