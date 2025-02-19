@@ -87,10 +87,7 @@ export default function About({}: AboutProps) {
         </Container>
       </Container>
       <div className="flex flex-col xl:flex-row">
-        <Container
-          className="flex flex-col gap-7"
-          bgColor="bg-neutral-800 px-20"
-        >
+        <Container className="flex flex-col gap-7" bgColor="bg-neutral-800">
           <h1>About Me</h1>
           <p className="m-0">
             I am a dedicated programmer, always eager to enhance my skills and
@@ -99,7 +96,7 @@ export default function About({}: AboutProps) {
             software development.
           </p>
         </Container>
-        <Container className="flex flex-col gap-7" bgColor="px-20">
+        <Container className="flex flex-col gap-7">
           <h1>Internship</h1>
           <p className="m-0">
             I am interning at{" "}
