@@ -61,12 +61,14 @@ function BlogPage({}: BlogPageProps) {
         />
       </Container>
       {isLoading ? (
-        <Loadingicon />
-      ) : isError ? (
+        <Loadingicon center />
+      ) : isError || !blogs ? (
         <Error />
-      ) : !blogs ? (
+      ) : blogs.length === 0 ? (
         <div className="flex-1 flex flex-col gap-2 items-center justify-center">
+          <Loadingicon />
           <p>No blogs found ...</p>
+          <p>Try adjusting your filters</p>
         </div>
       ) : (
         <>

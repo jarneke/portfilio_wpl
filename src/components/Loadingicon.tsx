@@ -2,9 +2,15 @@
 
 import { motion } from "framer-motion";
 
-const LoadingIcon = () => {
+interface LoadingIconProps {
+  center?: boolean;
+}
+
+const LoadingIcon = ({ center }: LoadingIconProps) => {
   return (
-    <div className="flex-1 flex items-center justify-center">
+    <div
+      className={`${center ? "flex-1" : ""} flex items-center justify-center`}
+    >
       <svg width="180" height="180" viewBox="-90 -90 180 180">
         <motion.line
           x1="-40"
