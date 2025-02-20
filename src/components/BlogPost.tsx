@@ -1,5 +1,5 @@
 import { Blog } from "@/types/types";
-import TagBadge from "./TagBadge";
+import TagBadge from "@/components/TagBadge";
 import { useEffect, useState } from "react";
 import Error from "@/components/Error";
 import axios from "axios";
@@ -7,7 +7,8 @@ import { useRouter } from "next/router";
 import { ObjectId } from "mongodb";
 import MarkdownIt from "markdown-it";
 import markdownItFootnote from "markdown-it-footnote";
-import LoadingIcon from "./Loadingicon";
+import LoadingIcon from "@/components/Loadingicon";
+import LikeDislike from "@/components/LikeDislike";
 
 interface BlogPostProps {
   blog: Blog;
@@ -107,7 +108,12 @@ const BlogPost = ({
           Read More
         </button>
       )}
-      <p>{blog.date ? new Date(blog.date).toDateString() : "Invalid Date"}</p>
+      <div className="flex justify-between">
+        <p className="mb-0">
+          {blog.date ? new Date(blog.date).toDateString() : "Invalid Date"}
+        </p>
+        <LikeDislike blog={blog} />
+      </div>
     </div>
   );
 };
