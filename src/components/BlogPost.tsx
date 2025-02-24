@@ -58,7 +58,7 @@ const BlogPost = ({
   };
 
   if (isLoading) return <LoadingIcon />;
-  if (isError) return <Error />;
+  if (isError) return <Error size="lg" icon />;
 
   return (
     <div className="flex flex-col gap-5">
