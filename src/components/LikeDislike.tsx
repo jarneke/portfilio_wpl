@@ -19,7 +19,10 @@ const LikeDislike = ({ blog }: LikeDislikeProps) => {
 
     setState(like ? "like" : "dislike");
     try {
-      const data = await axios.put<Blog>(`/api/blogs/${blog._id}`, { blog });
+      const data = await axios.put<Blog>(
+        `/api/likes?blogId=${blog._id}&userEmail=${session.user?.email}&like=${state}`,
+        { blog }
+      );
     } catch (error) {
       setState("none");
     }

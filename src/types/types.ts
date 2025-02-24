@@ -8,6 +8,13 @@ export interface Blog {
     tags: string[];
 }
 
+export interface Like {
+    _id?: ObjectId;
+    blogId: ObjectId;
+    userEmail: string;
+    state: boolean
+}
+
 export interface BlogTagString {
     title: string;
     content: string;
