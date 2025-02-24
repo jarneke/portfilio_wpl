@@ -1,8 +1,8 @@
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
 import MarkdownIt from "markdown-it";
 import markdownItFootnote from "markdown-it-footnote";
 import StickyHeader from "@/components/stickyheader";
-import MenuItem from "@/components/MenuItem";
-import Link from "next/link";
 import Container from "@/components/Container";
 import BlogPostForm from "@/components/BlogPostForm";
 import BlogPost from "@/components/BlogPost";
@@ -18,10 +18,6 @@ function Admin() {
   });
 
   const handleFormChange = (updated: Blog) => {
-    const markdownContent = updated.content;
-    const tagsArray = updated.tags;
-
-    // Initialize markdown-it with additional plugins
     const md = new MarkdownIt({
       html: true,
       linkify: true,
@@ -29,16 +25,11 @@ function Admin() {
       breaks: true,
     }).use(markdownItFootnote);
 
-    const processedContent = md.render(markdownContent);
-
-    const blogPost: Blog = {
-      title: updated.title,
-      content: processedContent,
-      tags: tagsArray,
+    setFormData({
+      ...updated,
+      content: md.render(updated.content),
       date: new Date(),
-    };
-
-    setFormData(blogPost);
+    });
   };
 
   return (
@@ -58,3 +49,21 @@ function Admin() {
 }
 
 export default Admin;
+
+// 🔒 Server-side authentication check
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

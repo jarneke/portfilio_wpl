@@ -43,7 +43,7 @@ function BlogDetail({}: BlogDetailProps) {
         {isLoading ? (
           <Loadingicon />
         ) : isError ? (
-          <Error />
+          <Error size="lg" />
         ) : (
           <BlogPost blog={blog!} isLoading={isLoading} expanded />
         )}
