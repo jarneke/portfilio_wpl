@@ -1,40 +1,45 @@
 import BlogPost from "@/components/BlogPost";
 import Container from "@/components/Container";
 import Loadingicon from "@/components/Loadingicon";
-import MenuItem from "@/components/MenuItem";
 import StickyHeader from "@/components/stickyheader";
 import Error from "@/components/Error";
-import { Blog } from "@/types/types";
+import { Blog, BlogWithLike } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import Link from "next/link";
 import { customStyles } from "@/styles/SelectStyle";
 import { tagOptions } from "@/types/types";
 import Select, { MultiValue } from "react-select";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface BlogPageProps {}
 
 function BlogPage({}: BlogPageProps) {
   const [filter, setFilter] = useState<string>("");
+  const { data: session, status } = useSession();
 
   const {
     data: blogs,
     isLoading,
     isError,
   } = useQuery({
-    queryFn: async (): Promise<Blog[]> => {
-      const { data } = await axios.get(`/api/blogposts?tags=${filter}`);
+    queryFn: async (): Promise<BlogWithLike[]> => {
+      const { data } = await axios.get(
+        `/api/blogposts?tags=${filter}&userEmail=${session?.user?.email}`
+      );
 
-      return data.map((blog: Blog) => ({
+      return data.map((blog: BlogWithLike) => ({
         _id: blog._id,
         title: blog.title,
         content: blog.content,
         date: new Date(blog.date),
         tags: blog.tags,
-      })) as Blog[];
+        likes: blog.likes,
+        liked: blog.liked,
+        dislikes: blog.dislikes,
+      })) as BlogWithLike[];
     },
-    queryKey: ["blogs", filter],
+    queryKey: ["blogs", filter, session?.user?.email],
   });
 
   const handleFilterChange = (
@@ -72,15 +77,18 @@ function BlogPage({}: BlogPageProps) {
         </div>
       ) : (
         <>
-          {blogs.map((blog: Blog, index) => (
-            <Container bgColor={`${index % 2 !== 0 ? "bg-neutral-800" : ""}`}>
-              <BlogPost
-                blog={blog}
-                key={index}
-                bgColor={`${index % 2 !== 0 ? "#262626" : ""}`}
-              />
-            </Container>
-          ))}
+          {blogs.map((blog: BlogWithLike, index) => {
+            console.log(blog);
+            return (
+              <Container bgColor={`${index % 2 !== 0 ? "bg-neutral-800" : ""}`}>
+                <BlogPost
+                  blog={blog}
+                  key={index}
+                  bgColor={`${index % 2 !== 0 ? "#262626" : ""}`}
+                />
+              </Container>
+            );
+          })}
         </>
       )}
     </div>

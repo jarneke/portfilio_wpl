@@ -1,15 +1,25 @@
-import { blogCollection, connect, disconnect } from '@/config/db';
-import { Blog } from '@/types/types';
-import { ObjectId } from 'mongodb';
+import { blogCollection, connect, disconnect, likeCollection } from '@/config/db';
+import { Blog, BlogWithLike, Like } from '@/types/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Blog | { message: string }>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<BlogWithLike | { message: string }>) {
     if (req.method === 'GET') {
         try {
             await connect();
-            const blog = await blogCollection.findOne({}, { sort: { date: -1 } })
+            const blog: Blog | null = await blogCollection.findOne({}, { sort: { date: -1 } })
+            const likes: Like[] = await likeCollection.find({ blogId: blog?._id }).toArray();
             if (blog) {
-                res.status(200).json(blog);
+                const blogWithLikes: BlogWithLike = {
+                    _id: blog._id,
+                    title: blog.title,
+                    content: blog.content,
+                    date: blog.date,
+                    tags: blog.tags,
+                    likes: likes.filter(like => like.state).length,
+                    dislikes: likes.filter(like => !like.state).length,
+                    liked: likes.filter(like => like.userEmail === req.query.userEmail as string).length === 1
+                }
+                res.status(200).json(blogWithLikes);
             } else {
                 res.status(404).json({ message: 'No blog post found' });
             }

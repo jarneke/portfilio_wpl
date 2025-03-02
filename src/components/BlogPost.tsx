@@ -1,4 +1,4 @@
-import { Blog } from "@/types/types";
+import { Blog, BlogWithLike } from "@/types/types";
 import TagBadge from "@/components/TagBadge";
 import { useEffect, useState } from "react";
 import Error from "@/components/Error";
@@ -11,7 +11,7 @@ import LoadingIcon from "@/components/Loadingicon";
 import LikeDislike from "@/components/LikeDislike";
 
 interface BlogPostProps {
-  blog: Blog;
+  blog: BlogWithLike;
   isLoading?: boolean;
   expanded?: boolean;
   bgColor?: string;

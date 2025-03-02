@@ -1,25 +1,35 @@
-import { ObjectId } from "mongodb";
+import { ObjectId } from "mongodb"
 
 export interface Blog {
-    _id?: ObjectId;
-    title: string;
-    content: string;
-    date: Date;
-    tags: string[];
+    _id?: ObjectId
+    title: string
+    content: string
+    date: Date
+    tags: string[]
 }
 
 export interface Like {
-    _id?: ObjectId;
-    blogId: ObjectId;
-    userEmail: string;
-    state: boolean
+    _id?: ObjectId
+    blogId: ObjectId
+    userEmail: string
+    state: "like" | "dislike" | "none"
 }
 
+export interface BlogWithLike {
+    _id?: ObjectId
+    title: string
+    content: string
+    date: Date
+    tags: string[]
+    likes: number
+    liked: "like" | "dislike" | "none"
+    dislikes: number
+}
 export interface BlogTagString {
-    title: string;
-    content: string;
-    date: Date;
-    tags: string;
+    title: string
+    content: string
+    date: Date
+    tags: string
 }
 
 export const tagOptions: string[] = [
@@ -38,7 +48,7 @@ export const tagOptions: string[] = [
     "gaining confidence",
     "workflow improvement",
     "mentorship experience",
-];
+]
 
 export interface GitResponse {
     total_count: number
