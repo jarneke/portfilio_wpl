@@ -8,6 +8,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             await connect();
             const blog: Blog | null = await blogCollection.findOne({}, { sort: { date: -1 } })
             const likes: Like[] = await likeCollection.find({ blogId: blog?._id }).toArray();
+            const likedByUser = likes.filter(like => like.userEmail === req.query.userEmail as string);
+            let liked: "like" | "dislike" | "none" = "none";
+            if (likedByUser.length > 0) {
+                liked = likedByUser[0].state;
+            }
             if (blog) {
                 const blogWithLikes: BlogWithLike = {
                     _id: blog._id,
@@ -17,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     tags: blog.tags,
                     likes: likes.filter(like => like.state).length,
                     dislikes: likes.filter(like => !like.state).length,
-                    liked: likes.filter(like => like.userEmail === req.query.userEmail as string).length === 1
+                    liked: liked
                 }
                 res.status(200).json(blogWithLikes);
             } else {
