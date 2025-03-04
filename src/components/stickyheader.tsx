@@ -34,7 +34,8 @@ const StickyHeader = ({ children }: StickyHeaderProps) => {
 
       return data.items[0].login;
     },
-    queryKey: ["userName"],
+    queryKey: ["userName", session?.user?.email],
+    enabled: !!session?.user?.email,
   });
 
   return (

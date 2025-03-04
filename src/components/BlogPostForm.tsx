@@ -1,4 +1,4 @@
-import { Blog } from "@/types/types";
+import { Blog, BlogWithLike } from "@/types/types";
 import axios from "axios";
 import { useState } from "react";
 import Select, { MultiValue } from "react-select";
@@ -6,15 +6,18 @@ import { tagOptions } from "@/types/types";
 import { customStyles } from "@/styles/SelectStyle";
 
 interface BlogPostFormProps {
-  onChange?: (data: Blog) => void;
+  onChange?: (data: BlogWithLike) => void;
 }
 
 const BlogPostForm = ({ onChange }: BlogPostFormProps) => {
-  const [formData, setFormData] = useState<Blog>({
+  const [formData, setFormData] = useState<BlogWithLike>({
     title: "",
     content: "",
     date: new Date(),
     tags: [],
+    likes: 0,
+    dislikes: 0,
+    liked: "none",
   });
   const [message, setMessage] = useState<{
     state: "success" | "error" | "warning" | "none";
@@ -24,14 +27,17 @@ const BlogPostForm = ({ onChange }: BlogPostFormProps) => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const updated: Blog = { ...formData, [e.target.name]: e.target.value };
+    const updated: BlogWithLike = {
+      ...formData,
+      [e.target.name]: e.target.value,
+    };
     setFormData(updated);
     if (onChange) onChange(updated);
   };
 
   const handleTagChange = (selectedOptions: MultiValue<{ value: string }>) => {
     const selectedTags = selectedOptions.map((option) => option.value);
-    const updated: Blog = { ...formData, tags: selectedTags };
+    const updated: BlogWithLike = { ...formData, tags: selectedTags };
     setFormData(updated);
     if (onChange) onChange(updated);
   };

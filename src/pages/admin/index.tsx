@@ -1,23 +1,54 @@
-import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import MarkdownIt from "markdown-it";
 import markdownItFootnote from "markdown-it-footnote";
 import StickyHeader from "@/components/stickyheader";
 import Container from "@/components/Container";
 import BlogPostForm from "@/components/BlogPostForm";
 import BlogPost from "@/components/BlogPost";
-import { Blog } from "@/types/types";
-import { useState } from "react";
+import { BlogWithLike } from "@/types/types";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import LoadingIcon from "@/components/Loadingicon";
 
 function Admin() {
-  const [formData, setFormData] = useState<Blog>({
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const { data: isAdmin } = useQuery({
+    queryKey: ["isAdmin", session?.user],
+    queryFn: async () => {
+      const response = await fetch("/api/auth/is-admin");
+
+      const data = await response.json();
+
+      return data.isAdmin;
+    },
+  });
+
+  useEffect(() => {
+    console.log("isAdmin ", isAdmin);
+    console.log("status ", status);
+
+    if (
+      status === "unauthenticated" ||
+      (status === "authenticated" && isAdmin === false)
+    ) {
+      router.push("/");
+    }
+  }, [status, isAdmin]);
+
+  const [formData, setFormData] = useState<BlogWithLike>({
     title: "",
     content: "",
     date: new Date(),
     tags: [],
+    likes: 0,
+    dislikes: 0,
+    liked: "none",
   });
 
-  const handleFormChange = (updated: Blog) => {
+  const handleFormChange = (updated: BlogWithLike) => {
     const md = new MarkdownIt({
       html: true,
       linkify: true,
@@ -25,12 +56,20 @@ function Admin() {
       breaks: true,
     }).use(markdownItFootnote);
 
-    setFormData({
+    setFormData((prev) => ({
       ...updated,
       content: md.render(updated.content),
-      date: new Date(),
-    });
+      date: prev.date,
+    }));
   };
+
+  if (status === "unauthenticated" || status === "loading") {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <LoadingIcon />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -49,21 +88,3 @@ function Admin() {
 }
 
 export default Admin;
-
-// 🔒 Server-side authentication check
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-};

@@ -2,7 +2,7 @@ import MainPageStartupHeader from "@/components/MainPageStartupHeader";
 import Container from "@/components/Container";
 import BlogPost from "@/components/BlogPost";
 import { useQuery } from "@tanstack/react-query";
-import { Blog } from "@/types/types";
+import { Blog, BlogWithLike } from "@/types/types";
 import axios from "axios";
 import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
@@ -14,10 +14,10 @@ export default function Home() {
     isLoading,
     isError,
   } = useQuery({
-    queryFn: async (): Promise<Blog> => {
+    queryFn: async (): Promise<BlogWithLike> => {
       const { data } = await axios.get("/api/blogposts/latest");
 
-      return data as Blog;
+      return data as BlogWithLike;
     },
     queryKey: ["blog"],
   });
