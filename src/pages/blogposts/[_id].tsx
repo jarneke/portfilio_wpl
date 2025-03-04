@@ -3,7 +3,7 @@ import Container from "@/components/Container";
 import Loadingicon from "@/components/Loadingicon";
 import MenuItem from "@/components/MenuItem";
 import StickyHeader from "@/components/stickyheader";
-import { Blog } from "@/types/types";
+import { Blog, BlogWithLike } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
@@ -23,9 +23,9 @@ function BlogDetail({}: BlogDetailProps) {
     isLoading,
     isError,
   } = useQuery({
-    queryFn: async (): Promise<Blog> => {
+    queryFn: async (): Promise<BlogWithLike> => {
       const { data } = await axios.get(`/api/blogposts/${_id}`);
-      return data as Blog;
+      return data as BlogWithLike;
     },
     queryKey: ["blogs", _id],
   });
@@ -42,10 +42,10 @@ function BlogDetail({}: BlogDetailProps) {
       <Container className="flex flex-col gap-7">
         {isLoading ? (
           <Loadingicon />
-        ) : isError ? (
-          <Error size="lg" />
+        ) : isError || !blog ? (
+          <Error size="lg" icon />
         ) : (
-          <BlogPost blog={blog!} isLoading={isLoading} expanded />
+          <BlogPost blog={blog} isLoading={isLoading} expanded />
         )}
       </Container>
     </>
