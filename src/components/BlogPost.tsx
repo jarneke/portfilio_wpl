@@ -1,4 +1,4 @@
-import { Blog, BlogWithLike } from "@/types/types";
+import { Blog, BlogWithLike, BlogWithLikeAndComments } from "@/types/types";
 import TagBadge from "@/components/TagBadge";
 import { useEffect, useState } from "react";
 import Error from "@/components/Error";
@@ -9,9 +9,10 @@ import MarkdownIt from "markdown-it";
 import markdownItFootnote from "markdown-it-footnote";
 import LoadingIcon from "@/components/Loadingicon";
 import LikeDislike from "@/components/LikeDislike";
+import CommentSection from "./CommentSection";
 
 interface BlogPostProps {
-  blog: BlogWithLike;
+  blog: BlogWithLike | BlogWithLikeAndComments;
   isLoading?: boolean;
   expanded?: boolean;
   bgColor?: string;
@@ -42,20 +43,6 @@ const BlogPost = ({
       setHtmlContent(processedContent);
     }
   }, [blog]);
-
-  const removeBlog = async (_id: ObjectId | undefined) => {
-    if (!_id) return;
-    try {
-      const response = await axios.delete(`/api/blogposts/${_id}`);
-      if (response.status === 200) {
-        alert("Blog post deleted successfully");
-      } else {
-        alert("Failed to delete blog post");
-      }
-    } catch (error) {
-      alert("Failed to delete blog post");
-    }
-  };
 
   if (isLoading) return <LoadingIcon />;
   if (isError) return <Error size="lg" icon />;
@@ -114,6 +101,9 @@ const BlogPost = ({
         </p>
         <LikeDislike blog={blog} />
       </div>
+      {expanded && (
+        <CommentSection comments={(blog as BlogWithLikeAndComments).comments} />
+      )}
     </div>
   );
 };

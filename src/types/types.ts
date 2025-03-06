@@ -15,6 +15,32 @@ export interface Like {
     state: "like" | "dislike" | "none"
 }
 
+export interface Comment {
+    _id?: ObjectId
+    blogId: ObjectId
+    userEmail: string
+    content: string
+    date: Date
+}
+
+export interface CommentLike {
+    _id?: ObjectId
+    commentId: ObjectId
+    userEmail: string
+    state: "like" | "dislike" | "none"
+}
+
+export interface CommentWithLike {
+    _id?: ObjectId
+    blogId: ObjectId
+    userEmail: string
+    content: string
+    date: Date
+    likes: number
+    liked: "like" | "dislike" | "none"
+    dislikes: number
+}
+
 export interface BlogWithLike {
     _id?: ObjectId
     title: string
@@ -24,6 +50,17 @@ export interface BlogWithLike {
     likes: number
     liked: "like" | "dislike" | "none"
     dislikes: number
+}
+export interface BlogWithLikeAndComments {
+    _id?: ObjectId
+    title: string
+    content: string
+    date: Date
+    tags: string[]
+    likes: number
+    liked: "like" | "dislike" | "none"
+    dislikes: number
+    comments: CommentWithLike[]
 }
 export interface BlogTagString {
     title: string

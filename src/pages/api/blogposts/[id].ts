@@ -1,10 +1,10 @@
-import { blogCollection, connect, disconnect, likeCollection } from '@/config/db';
-import { Blog, BlogWithLike, Like } from '@/types/types';
+import { blogCollection, commentCollection, commentLikeCollection, connect, disconnect, likeCollection } from '@/config/db';
+import { Blog, BlogWithLikeAndComments, Comment, CommentLike, CommentWithLike, Like } from '@/types/types';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<BlogWithLike | { message: string }>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<BlogWithLikeAndComments | { message: string }>) {
     const session = await getSession({ req });
     if (req.method === 'GET') {
         try {
@@ -12,13 +12,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
             const blog: Blog | null = await blogCollection.findOne({ _id: new ObjectId(req.query.id as string) });
             const likes: Like[] = await likeCollection.find({ blogId: new ObjectId(req.query.id as string) }).toArray();
+            const comments: Comment[] = await commentCollection.find({ blogId: new ObjectId(req.query.id as string) }).toArray();
+            const commentsWithLikes: CommentWithLike[] = await Promise.all(
+                comments.map(async comment => {
+                    const commentLikes: CommentLike[] = await commentLikeCollection.find({ commentId: new ObjectId(comment._id) }).toArray();
+                    const likedByUser = commentLikes.filter(like => like.userEmail === session?.user?.email as string);
+                    let liked: "like" | "dislike" | "none" = "none";
+                    if (likedByUser.length > 0) {
+                        liked = likedByUser[0].state;
+                    }
+                    return {
+                        _id: comment._id,
+                        blogId: comment.blogId,
+                        userEmail: comment.userEmail,
+                        content: comment.content,
+                        date: comment.date,
+                        likes: commentLikes.filter(like => like.state === "like").length,
+                        dislikes: commentLikes.filter(like => like.state === "dislike").length,
+                        liked: liked
+                    };
+                })
+            );
             const likedByUser = likes.filter(like => like.userEmail === session?.user?.email as string);
             let liked: "like" | "dislike" | "none" = "none";
             if (likedByUser.length > 0) {
                 liked = likedByUser[0].state;
             }
             if (blog) {
-                const blogWithLikes: BlogWithLike = {
+                const blogWithLikes: BlogWithLikeAndComments = {
                     _id: blog._id,
                     title: blog.title,
                     content: blog.content,
@@ -26,7 +47,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     tags: blog.tags,
                     likes: likes.filter(like => like.state === "like").length,
                     dislikes: likes.filter(like => like.state === "dislike").length,
-                    liked: liked
+                    liked: liked,
+                    comments: commentsWithLikes
                 }
                 res.status(200).json(blogWithLikes);
             } else {

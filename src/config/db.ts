@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
-import { Blog, Like } from '@/types/types';
+import { Blog, Comment, CommentLike, Like } from '@/types/types';
 
 dotenv.config();
 
@@ -15,6 +15,8 @@ const db = client.db('portfolio_wpl');
 // -- collections --
 export const blogCollection = db.collection<Blog>('blogs');
 export const likeCollection = db.collection<Like>('likes');
+export const commentCollection = db.collection<Comment>('comments');
+export const commentLikeCollection = db.collection<CommentLike>('commentLikes');
 
 
 let connected = false;
