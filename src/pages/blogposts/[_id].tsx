@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FaChevronLeft } from "react-icons/fa";
 import Error from "@/components/Error";
+import { useEffect } from "react";
 
 interface BlogDetailProps {}
 

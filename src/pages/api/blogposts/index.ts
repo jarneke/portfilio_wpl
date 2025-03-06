@@ -2,13 +2,15 @@ import { blogCollection, connect, disconnect, likeCollection } from '@/config/db
 import { Blog, BlogWithLike, Like } from '@/types/types';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<BlogWithLike[] | { message: string }>) {
+    const session = await getSession({ req });
     if (req.method === 'GET') {
         try {
             await connect();
             let filter = {}
-            if (req.query.tags && req.query.userEmail) {
+            if (req.query.tags && session?.user?.email) {
 
                 const tags = !Array.isArray(req.query.tags) ? req.query.tags.split(",") : req.query.tags;
                 filter = { tags: { $all: tags } };
@@ -19,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             const blogsWithLikes: BlogWithLike[] = await Promise.all(
                 blogs.map(async blog => {
                     const likes: Like[] = await likeCollection.find({ blogId: blog._id }).toArray();
-                    const likedByUser = likes.filter(like => like.userEmail === req.query.userEmail as string);
+                    const likedByUser = likes.filter(like => like.userEmail === session?.user?.email as string);
                     let liked: "like" | "dislike" | "none" = "none";
                     if (likedByUser.length > 0) {
                         liked = likedByUser[0].state;

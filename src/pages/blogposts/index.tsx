@@ -16,7 +16,6 @@ interface BlogPageProps {}
 
 function BlogPage({}: BlogPageProps) {
   const [filter, setFilter] = useState<string>("");
-  const { data: session, status } = useSession();
 
   const {
     data: blogs,
@@ -24,9 +23,7 @@ function BlogPage({}: BlogPageProps) {
     isError,
   } = useQuery({
     queryFn: async (): Promise<BlogWithLike[]> => {
-      const { data } = await axios.get(
-        `/api/blogposts?tags=${filter}&userEmail=${session?.user?.email}`
-      );
+      const { data } = await axios.get(`/api/blogposts?tags=${filter}`);
 
       return data.map((blog: BlogWithLike) => ({
         _id: blog._id,
@@ -39,7 +36,7 @@ function BlogPage({}: BlogPageProps) {
         dislikes: blog.dislikes,
       })) as BlogWithLike[];
     },
-    queryKey: ["blogs", filter, session?.user?.email],
+    queryKey: ["blogs", filter],
   });
 
   const handleFilterChange = (

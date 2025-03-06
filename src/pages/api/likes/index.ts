@@ -15,13 +15,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 const removeLike = await likeCollection.deleteMany({ blogId: new ObjectId(blogId as string), userEmail: userEmail as string });
                 return res.status(200).json({ message: `${removeLike.deletedCount} removed` });
             } else if (state === "like") {
-                await likeCollection.deleteMany({ blogId: new ObjectId(blogId as string), userEmail: userEmail as string, state: 'dislike' });
-                const newLike = await likeCollection.insertOne({ _id: new ObjectId, blogId: new ObjectId(blogId as string), userEmail: userEmail as string, state: 'like' });
-                return res.status(201).json({ message: `new like inserted with id: ${newLike.insertedId.toHexString()}` });
+                const update = await likeCollection.findOneAndUpdate({ blogId: new ObjectId(blogId as string), userEmail: userEmail as string }, { $set: { state: 'like' } }, { upsert: true });
+                return res.status(201).json({ message: `User ${update?.userEmail} Liked blog with ID: ${update?.blogId}` });
             } else if (state === "dislike") {
-                await likeCollection.deleteMany({ blogId: new ObjectId(blogId as string), userEmail: userEmail as string, state: 'like' });
-                const newLike = await likeCollection.insertOne({ _id: new ObjectId, blogId: new ObjectId(blogId as string), userEmail: userEmail as string, state: 'dislike' });
-                return res.status(201).json({ message: `new dislike inserted with id: ${newLike.insertedId.toHexString()}` });
+                await likeCollection.findOneAndUpdate({ blogId: new ObjectId(blogId as string), userEmail: userEmail as string }, { $set: { state: 'dislike' } }, { upsert: true });
+                return res.status(201).json({ message: `User ${userEmail} Disliked blog with ID: ${blogId}` });
             } else {
                 return res.status(400).json({ message: `Invalid data: { blogId: ${blogId}, userEmail: ${userEmail}, like: ${state} }` });
             }
