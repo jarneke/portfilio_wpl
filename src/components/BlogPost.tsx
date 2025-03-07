@@ -102,7 +102,10 @@ const BlogPost = ({
         <LikeDislike blog={blog} />
       </div>
       {expanded && (
-        <CommentSection comments={(blog as BlogWithLikeAndComments).comments} />
+        <CommentSection
+          blogId={blog._id as ObjectId}
+          comments={(blog as BlogWithLikeAndComments).comments}
+        />
       )}
     </div>
   );
