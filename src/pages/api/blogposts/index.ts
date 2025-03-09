@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         try {
             await connect();
             let filter = {}
-            if (req.query.tags && session?.user?.email) {
+            if (req.query.tags) {
 
                 const tags = !Array.isArray(req.query.tags) ? req.query.tags.split(",") : req.query.tags;
                 filter = { tags: { $all: tags } };
