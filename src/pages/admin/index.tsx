@@ -6,7 +6,7 @@ import StickyHeader from "@/components/stickyheader";
 import Container from "@/components/Container";
 import BlogPostForm from "@/components/BlogPostForm";
 import BlogPost from "@/components/BlogPost";
-import { BlogWithLike } from "@/types/types";
+import { BlogWithLike, BlogWithLikeAndComments } from "@/types/types";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import LoadingIcon from "@/components/Loadingicon";
@@ -38,7 +38,7 @@ function Admin() {
     }
   }, [status, isAdmin]);
 
-  const [formData, setFormData] = useState<BlogWithLike>({
+  const [formData, setFormData] = useState<BlogWithLikeAndComments>({
     title: "",
     content: "",
     date: new Date(),
@@ -46,9 +46,10 @@ function Admin() {
     likes: 0,
     dislikes: 0,
     liked: "none",
+    comments: [],
   });
 
-  const handleFormChange = (updated: BlogWithLike) => {
+  const handleFormChange = (updated: BlogWithLikeAndComments) => {
     const md = new MarkdownIt({
       html: true,
       linkify: true,
