@@ -9,7 +9,10 @@ import {
 import { ObjectId } from "mongodb";
 import { getSession } from "next-auth/react";
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const session = await getSession({ req });
   if (req.method === "POST") {
     try {
@@ -19,7 +22,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         content,
         date,
         userEmail,
-        blogId,
+        blogId: new ObjectId(blogId),
       });
       res.status(200).json({ message: "Comment saved successfully" });
     } catch (error) {
@@ -79,4 +82,4 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.setHeader("Allow", ["GET", "DELETE"]);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-};
+}

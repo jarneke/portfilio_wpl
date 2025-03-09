@@ -12,7 +12,7 @@ import LikeDislike from "@/components/LikeDislike";
 import CommentSection from "./CommentSection";
 
 interface BlogPostProps {
-  blog: BlogWithLike | BlogWithLikeAndComments;
+  blog: BlogWithLikeAndComments;
   isLoading?: boolean;
   expanded?: boolean;
   bgColor?: string;
@@ -30,6 +30,8 @@ const BlogPost = ({
   const router = useRouter();
 
   useEffect(() => {
+    console.log(blog);
+
     if (blog?.content) {
       const md = new MarkdownIt({
         html: true,
@@ -104,7 +106,7 @@ const BlogPost = ({
       {expanded && (
         <CommentSection
           blogId={blog._id as ObjectId}
-          comments={(blog as BlogWithLikeAndComments).comments}
+          comments={blog.comments}
         />
       )}
     </div>

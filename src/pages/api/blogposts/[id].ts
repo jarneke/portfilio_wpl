@@ -11,11 +11,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             await connect();
 
             const blog: Blog | null = await blogCollection.findOne({ _id: new ObjectId(req.query.id as string) });
-            const likes: Like[] = await likeCollection.find({ blogId: new ObjectId(req.query.id as string) }).toArray();
-            const comments: Comment[] = await commentCollection.find({ blogId: new ObjectId(req.query.id as string) }).toArray();
+            if (!blog) return res.status(404).json({ message: 'No blog post found' });
+            const likes: Like[] = await likeCollection.find({ blogId: blog?._id }).toArray();
+            const comments: Comment[] = await commentCollection.find({ blogId: blog?._id }).toArray();
             const commentsWithLikes: CommentWithLike[] = await Promise.all(
                 comments.map(async comment => {
-                    const commentLikes: CommentLike[] = await commentLikeCollection.find({ commentId: new ObjectId(comment._id) }).toArray();
+                    const commentLikes: CommentLike[] = await commentLikeCollection.find({ commentId: comment._id }).toArray();
                     const likedByUser = commentLikes.filter(like => like.userEmail === session?.user?.email as string);
                     let liked: "like" | "dislike" | "none" = "none";
                     if (likedByUser.length > 0) {
